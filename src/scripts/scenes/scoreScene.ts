@@ -5,10 +5,16 @@ export class ScoreScene extends Phaser.Scene {
   result: Phaser.GameObjects.Text;
   hint: Phaser.GameObjects.Text;
 
+  canvas: HTMLCanvasElement;
+
   constructor() {
     super({
       key: "ScoreScene"
     });
+  }
+
+  preload(): void {
+    this.canvas = this.sys.game.canvas;
   }
 
   init(params: any): void {
@@ -17,9 +23,9 @@ export class ScoreScene extends Phaser.Scene {
 
   create(): void {
     var resultText: string = 'Your score is ' + this.score + '!';
-    this.result = this.add.text(200, 250, resultText, { font: '48px Arial Bold', color: '#FBFBAC' });
+    this.result = this.add.text(this.canvas.width*1/3, this.canvas.height*1/4, resultText, { font: '48px Arial Bold', color: '#FBFBAC' });
     var hintText: string = "Click to restart";
-    this.hint = this.add.text(300, 350, hintText, { font: '24px Arial Bold', color: '#FBFBAC' });
+    this.hint = this.add.text(this.canvas.width*1/3, this.canvas.height*2/4, hintText, { font: '24px Arial Bold', color: '#FBFBAC' });
 
     this.input.on('pointerdown',  (/*pointer*/) => {
       this.scene.start("WelcomeScene");
