@@ -19,9 +19,14 @@ export class WelcomeScene extends Phaser.Scene {
   create(): void {
 
     var titleText: string = "Driving Prototype";
-    this.title = this.add.text(this.canvas.width*1/3, this.canvas.height*1/4, titleText, { font: '64px Arial Bold', color: '#FBFBAC' });
+    this.title = this.add.text(this.cameras.main.width*1/3, this.cameras.main.height*1/4, titleText, {
+      font: '64px Arial Bold', color: '#FBFBAC' }
+      );
+
     var hintText: string = "Click to start";
-    this.hint = this.add.text(this.canvas.width*1/3, this.canvas.height*2/4, hintText, { font: '24px Arial Bold', color: '#FBFBAC' });
+    this.hint = this.add.text(this.cameras.main.width*1/3, this.cameras.main.height*2/4, hintText, {
+      font: '24px Arial Bold', color: '#FBFBAC' }
+      );
 
     this.input.on('pointerdown',  (/*pointer*/) => {
       this.scene.start("GameScene");

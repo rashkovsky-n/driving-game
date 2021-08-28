@@ -62,15 +62,15 @@ export class GameScene extends Phaser.Scene {
       visible: false
     })
 
-    Phaser.Actions.PlaceOnLine(this.sideBorderRight.getChildren(), new Phaser.Geom.Line(this.canvas.width - 20, this.canvas.height - 20, this.canvas.width - 20, 0));
-    Phaser.Actions.PlaceOnLine(this.sideBorderLeft.getChildren(), new Phaser.Geom.Line(20, this.canvas.height - 20, 20, 0));
-    Phaser.Actions.PlaceOnLine(this.invisibleBorderBottom.getChildren(), new Phaser.Geom.Line(0, this.canvas.height + 50, this.canvas.width - 10, this.canvas.height + 50));
+    Phaser.Actions.PlaceOnLine(this.sideBorderRight.getChildren(), new Phaser.Geom.Line(this.cameras.main.width - 20, this.cameras.main.height - 20, this.cameras.main.width - 20, 0));
+    Phaser.Actions.PlaceOnLine(this.sideBorderLeft.getChildren(), new Phaser.Geom.Line(20, this.cameras.main.height - 20, 20, 0));
+    Phaser.Actions.PlaceOnLine(this.invisibleBorderBottom.getChildren(), new Phaser.Geom.Line(0, this.cameras.main.height + 50, this.cameras.main.width - 10, this.cameras.main.height + 50));
 
     this.sideBorderRight.refresh();
     this.sideBorderLeft.refresh();
     this.invisibleBorderBottom.refresh();
 
-    this.playerCar = this.physics.add.image(this.canvas.width*1/2, this.canvas.height - 50, "player-car");
+    this.playerCar = this.physics.add.image(this.cameras.main.width*1/2, this.cameras.main.height - 50, "player-car");
     this.playerCar.setCollideWorldBounds(true);
 
     this.cursors = this.input.keyboard.createCursorKeys();
@@ -144,7 +144,7 @@ export class GameScene extends Phaser.Scene {
 
   private emitCar(): void {
     var car: Phaser.Physics.Arcade.Image;
-    var x = Phaser.Math.Between(100, this.canvas.width - 100);
+    var x = Phaser.Math.Between(100, this.cameras.main.width - 100);
     var y = 25;
     car = this.physics.add.image(x, y, "car");
     car.setDisplaySize(45, 75);
