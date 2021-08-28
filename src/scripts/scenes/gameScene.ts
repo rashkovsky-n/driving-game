@@ -1,5 +1,6 @@
 import PlayerCar from "../objects/playerCar";
 import Car from "../objects/car";
+import ScoreText from "../objects/scoreText";
 
 //import "phaser";
 export class GameScene extends Phaser.Scene {
@@ -7,7 +8,7 @@ export class GameScene extends Phaser.Scene {
   delta: number;
   lastCarTime: number;
 
-  info: Phaser.GameObjects.Text;
+  scoreText: ScoreText;
   carsWrecked: number;
 
 
@@ -45,6 +46,8 @@ export class GameScene extends Phaser.Scene {
     // this.sand.refresh();
     // this.info = this.add.text(10, 10, '',
     //   { font: '24px Arial Bold', color: '#FBFBAC' });
+    this.scoreText = new ScoreText(this);
+
     this.sideBorderRight = this.physics.add.staticGroup({
       key: "side-border",
       frameQuantity: 20
@@ -121,6 +124,7 @@ export class GameScene extends Phaser.Scene {
     // this.info.text =
     //   this.starsCaught + " caught - " +
     //   this.starsFallen + " fallen (max 3)";
+    this.scoreText.update(this.carsWrecked);
   }
   
   private onCrash(car: Car): () => void {
