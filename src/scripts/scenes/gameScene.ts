@@ -1,6 +1,7 @@
 import PlayerCar from "../objects/playerCar";
 import Car from "../objects/car";
 import ScoreText from "../objects/scoreText";
+import Border from "../objects/static/border";
 
 //import "phaser";
 export class GameScene extends Phaser.Scene {
@@ -11,11 +12,11 @@ export class GameScene extends Phaser.Scene {
   scoreText: ScoreText;
   carsWrecked: number;
 
-
   playerCar: PlayerCar;
-  sideBorderLeft: Phaser.Physics.Arcade.StaticGroup;
-  sideBorderRight: Phaser.Physics.Arcade.StaticGroup;
-  invisibleBorderBottom: Phaser.Physics.Arcade.StaticGroup;
+
+  sideBorderLeft: Border;
+  sideBorderRight: Border;
+  invisibleBorderBottom: Border;
 
   cursors: Phaser.Types.Input.Keyboard.CursorKeys;
   canvas: HTMLCanvasElement;
@@ -37,58 +38,25 @@ export class GameScene extends Phaser.Scene {
 
   create(): void {
     this.carsWrecked = 0;
-    // this.sand = this.physics.add.staticGroup({
-    //   key: 'sand',
-    //   frameQuantity: 20
-    // });
-    // Phaser.Actions.PlaceOnLine(this.sand.getChildren(),
-    //   new Phaser.Geom.Line(20, 580, 820, 580));
-    // this.sand.refresh();
-    // this.info = this.add.text(10, 10, '',
-    //   { font: '24px Arial Bold', color: '#FBFBAC' });
     this.scoreText = new ScoreText(this);
 
-    this.sideBorderRight = this.physics.add.staticGroup({
-      key: "side-border",
-      frameQuantity: 20
-    })
-    this.sideBorderLeft = this.physics.add.staticGroup({
-      key: "side-border",
-      frameQuantity: 20
-    })
-    this.invisibleBorderBottom = this.physics.add.staticGroup({
-      key: "side-border",
-      frameQuantity: 40, 
-      visible: false
-    })
+    this.sideBorderLeft = new Border(this, 20, true).placeOnLine(
+      20, 
+      this.cameras.main.height - 20, 
+      20, 
+      0).refresh();
 
-    Phaser.Actions.PlaceOnLine(
-      this.sideBorderRight.getChildren(), 
-      new Phaser.Geom.Line(
-        this.cameras.main.width - 20, 
-        this.cameras.main.height - 20, 
-        this.cameras.main.width - 20, 
-        0));
+    this.sideBorderRight = new Border(this, 20, true).placeOnLine(
+      this.cameras.main.width - 20, 
+      this.cameras.main.height - 20, 
+      this.cameras.main.width - 20, 
+      0).refresh();
 
-    Phaser.Actions.PlaceOnLine(
-      this.sideBorderLeft.getChildren(), 
-      new Phaser.Geom.Line(
-        20, 
-        this.cameras.main.height - 20, 
-        20, 
-        0));
-
-    Phaser.Actions.PlaceOnLine(
-      this.invisibleBorderBottom.getChildren(), 
-      new Phaser.Geom.Line(
-        0, 
-        this.cameras.main.height + 50, 
-        this.cameras.main.width - 10, 
-        this.cameras.main.height + 50));
-
-    this.sideBorderRight.refresh();
-    this.sideBorderLeft.refresh();
-    this.invisibleBorderBottom.refresh();
+    this.invisibleBorderBottom = new Border(this, 40, false).placeOnLine(
+      0, 
+      this.cameras.main.height + 50, 
+      this.cameras.main.width - 10, 
+      this.cameras.main.height + 50).refresh();
 
     this.playerCar = new PlayerCar(this, 
       this.cameras.main.width*1/2, 
@@ -121,9 +89,7 @@ export class GameScene extends Phaser.Scene {
       // }
       this.emitCar();
     }
-    // this.info.text =
-    //   this.starsCaught + " caught - " +
-    //   this.starsFallen + " fallen (max 3)";
+
     this.scoreText.update(this.carsWrecked);
   }
   
@@ -158,7 +124,7 @@ export class GameScene extends Phaser.Scene {
     var y = 25;
     car = new Car(this, x, y);
 
-    this.physics.add.collider(car, this.invisibleBorderBottom, this.onBottom(car), undefined, this);
+    this.physics.add.collider(car, this.invisibleBorderBottom.border, this.onBottom(car), undefined, this);
     this.physics.add.collider(car, this.playerCar, this.onCrash(car), undefined, this);
   }
 
