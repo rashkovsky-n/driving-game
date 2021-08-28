@@ -19,7 +19,7 @@ export class GameScene extends Phaser.Scene {
   constructor() {
     super({
       key: "GameScene"
-    });
+    });  
   }
   init(/*params: any*/): void {
     this.delta = 1000;
@@ -30,9 +30,9 @@ export class GameScene extends Phaser.Scene {
   }
 
   preload(): void {
-    this.load.image("sideBorder", "../assets/img/stone.jpg");
-    this.load.image("playerCar", "../assets/img/playerCar.jpg");
-    this.load.image("car", "../assets/img/car.jpg");
+    // this.load.image("sideBorder", "../assets/img/stone.jpg");
+    // this.load.image("playerCar", "../assets/img/playerCar.jpg");
+    // this.load.image("car", "../assets/img/car.jpg");
 
     this.canvas = this.sys.game.canvas;
   }
@@ -49,15 +49,15 @@ export class GameScene extends Phaser.Scene {
     // this.info = this.add.text(10, 10, '',
     //   { font: '24px Arial Bold', color: '#FBFBAC' });
     this.sideBorderRight = this.physics.add.staticGroup({
-      key: "sideBorder",
+      key: "side-border",
       frameQuantity: 20
     })
     this.sideBorderLeft = this.physics.add.staticGroup({
-      key: "sideBorder",
+      key: "side-border",
       frameQuantity: 20
     })
     this.invisibleBorderBottom = this.physics.add.staticGroup({
-      key: "sideBorder",
+      key: "side-border",
       frameQuantity: 40, 
       visible: false
     })
@@ -70,7 +70,7 @@ export class GameScene extends Phaser.Scene {
     this.sideBorderLeft.refresh();
     this.invisibleBorderBottom.refresh();
 
-    this.playerCar = this.physics.add.image(this.canvas.width*1/2, this.canvas.height - 50, "playerCar");
+    this.playerCar = this.physics.add.image(this.canvas.width*1/2, this.canvas.height - 50, "player-car");
     this.playerCar.setCollideWorldBounds(true);
 
     this.cursors = this.input.keyboard.createCursorKeys();

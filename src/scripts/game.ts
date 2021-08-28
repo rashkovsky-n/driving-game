@@ -2,6 +2,7 @@ import 'phaser'
 //import MainScene from './scenes/mainScene'
 //import PreloadScene from './scenes/preloadScene'
 
+import {PreloadScene} from './scenes/preloadScene';
 import {WelcomeScene} from './scenes/welcomeScene';
 import {GameScene} from './scenes/gameScene';
 import {ScoreScene} from './scenes/scoreScene';
@@ -20,7 +21,7 @@ const config = {
     height: DEFAULT_HEIGHT
   },
   //scene: [PreloadScene, MainScene],
-  scene: [WelcomeScene, GameScene, ScoreScene],
+  scene: [PreloadScene, WelcomeScene, GameScene, ScoreScene],
   physics: {
     default: 'arcade',
     arcade: {
