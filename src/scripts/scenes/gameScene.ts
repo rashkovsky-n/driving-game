@@ -1,3 +1,5 @@
+import PlayerCar from "../objects/playerCar";
+
 //import "phaser";
 export class GameScene extends Phaser.Scene {
   
@@ -8,7 +10,7 @@ export class GameScene extends Phaser.Scene {
   carsWrecked: number;
 
 
-  playerCar: Phaser.Physics.Arcade.Image;
+  playerCar: PlayerCar;
   sideBorderLeft: Phaser.Physics.Arcade.StaticGroup;
   sideBorderRight: Phaser.Physics.Arcade.StaticGroup;
   invisibleBorderBottom: Phaser.Physics.Arcade.StaticGroup;
@@ -30,10 +32,6 @@ export class GameScene extends Phaser.Scene {
   }
 
   preload(): void {
-    // this.load.image("sideBorder", "../assets/img/stone.jpg");
-    // this.load.image("playerCar", "../assets/img/playerCar.jpg");
-    // this.load.image("car", "../assets/img/car.jpg");
-
     this.canvas = this.sys.game.canvas;
   }
 
@@ -62,38 +60,54 @@ export class GameScene extends Phaser.Scene {
       visible: false
     })
 
-    Phaser.Actions.PlaceOnLine(this.sideBorderRight.getChildren(), new Phaser.Geom.Line(this.cameras.main.width - 20, this.cameras.main.height - 20, this.cameras.main.width - 20, 0));
-    Phaser.Actions.PlaceOnLine(this.sideBorderLeft.getChildren(), new Phaser.Geom.Line(20, this.cameras.main.height - 20, 20, 0));
-    Phaser.Actions.PlaceOnLine(this.invisibleBorderBottom.getChildren(), new Phaser.Geom.Line(0, this.cameras.main.height + 50, this.cameras.main.width - 10, this.cameras.main.height + 50));
+    Phaser.Actions.PlaceOnLine(
+      this.sideBorderRight.getChildren(), 
+      new Phaser.Geom.Line(
+        this.cameras.main.width - 20, 
+        this.cameras.main.height - 20, 
+        this.cameras.main.width - 20, 
+        0));
+
+    Phaser.Actions.PlaceOnLine(
+      this.sideBorderLeft.getChildren(), 
+      new Phaser.Geom.Line(
+        20, 
+        this.cameras.main.height - 20, 
+        20, 
+        0));
+
+    Phaser.Actions.PlaceOnLine(
+      this.invisibleBorderBottom.getChildren(), 
+      new Phaser.Geom.Line(
+        0, 
+        this.cameras.main.height + 50, 
+        this.cameras.main.width - 10, 
+        this.cameras.main.height + 50));
 
     this.sideBorderRight.refresh();
     this.sideBorderLeft.refresh();
     this.invisibleBorderBottom.refresh();
 
-    this.playerCar = this.physics.add.image(this.cameras.main.width*1/2, this.cameras.main.height - 50, "player-car");
-    this.playerCar.setCollideWorldBounds(true);
-
+    this.playerCar = new PlayerCar(this, 
+      this.cameras.main.width*1/2, 
+      this.cameras.main.height - 50);
     this.cursors = this.input.keyboard.createCursorKeys();
   }
 
   update(time: number): void {
-    this.playerCar.setVelocity(0);
+    this.playerCar.stopCar();
 
-    if (this.cursors.left.isDown)
-    {
-      this.playerCar.setVelocityX(-200);
+    if (this.cursors.left.isDown) {
+      this.playerCar.moveLeft();
     }
-    else if (this.cursors.right.isDown)
-    {
-      this.playerCar.setVelocityX(200);
+    else if (this.cursors.right.isDown) {
+      this.playerCar.moveRight();
     }
-    if (this.cursors.up.isDown)
-    {
-      this.playerCar.setVelocityY(-200);
+    if (this.cursors.up.isDown) {
+      this.playerCar.moveUp();
     }
-    else if (this.cursors.down.isDown)
-    {
-      this.playerCar.setVelocityY(200);
+    else if (this.cursors.down.isDown) {
+      this.playerCar.moveDown();
     }
 
 
