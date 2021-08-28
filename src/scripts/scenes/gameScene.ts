@@ -1,4 +1,5 @@
 import PlayerCar from "../objects/playerCar";
+import Car from "../objects/car";
 
 //import "phaser";
 export class GameScene extends Phaser.Scene {
@@ -26,8 +27,6 @@ export class GameScene extends Phaser.Scene {
   init(/*params: any*/): void {
     this.delta = 1000;
     this.lastCarTime = 0;
-
-    //this.car = new Phaser.Geom.Rectangle (350, 50, 50, 100); 
     this.carsWrecked = 0;
   }
 
@@ -124,11 +123,10 @@ export class GameScene extends Phaser.Scene {
     //   this.starsFallen + " fallen (max 3)";
   }
   
-  private onCrash(car: Phaser.Physics.Arcade.Image): () => void {
+  private onCrash(car: Car): () => void {
     return  () => {
-      car.disableBody(true);
-      car.setTint(0xff0000);
-      car.setVelocity(0, 0);
+      car.crash();
+
       this.carsWrecked += 1;
 
       this.time.delayedCall(50,  (car) => {
@@ -142,29 +140,20 @@ export class GameScene extends Phaser.Scene {
     }
   }
 
-  private onBottom(car: Phaser.Physics.Arcade.Image): () => void {
+  private onBottom(car: Car): () => void {
     return  () => {
-      // car.setTint(0xff0000);
-      // this.starsFallen += 1;
       this.time.delayedCall(50, function (car) {
         car.destroy();
-        // if (this.starsFallen > 2) {
-        //   this.scene.start("ScoreScene",
-        //     { starsCaught: this.starsCaught });
-        // }
       }, [car], this);
     }
   }
 
   private emitCar(): void {
-    var car: Phaser.Physics.Arcade.Image;
+    var car: Car;
     var x = Phaser.Math.Between(100, this.cameras.main.width - 100);
     var y = 25;
-    car = this.physics.add.image(x, y, "car");
-    car.setDisplaySize(45, 75);
-    car.setVelocity(0, 200);
-    // car.setInteractive();
-    // car.on('pointerdown', this.onClick(star), this);
+    car = new Car(this, x, y);
+
     this.physics.add.collider(car, this.invisibleBorderBottom, this.onBottom(car), undefined, this);
     this.physics.add.collider(car, this.playerCar, this.onCrash(car), undefined, this);
   }
